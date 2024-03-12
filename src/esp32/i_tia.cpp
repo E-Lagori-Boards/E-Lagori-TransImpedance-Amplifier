@@ -14,7 +14,19 @@ void itia_setgain(struct i_tia *p, bool channo,float gain){
     digipot_Write_RDAC(&(p->d),channo, (int)(R/(p->maxR+3340)*256.0));
 }
 
-float ivga_presentgain(struct i_tia *p, bool channo){
+float itia_presentgain(struct i_tia *p, bool channo){
     float R = digipot_Readback_RDAC(&(p->d),channo)/256.0*(p->maxR+3340);
     return(R);
+}
+
+TIA::begin(float maxR,int address){
+    itia_init(&p,maxR,address,i2c);
+}
+
+TIA::setgain(bool channel_number,float gain){
+    itia_setgain(&p,channel_number,gain);
+}
+
+TIA::presentgain(bool channel_number){
+    itia_presentgain(&p,channel_number);
 }
